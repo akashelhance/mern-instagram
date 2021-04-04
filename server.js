@@ -1,7 +1,7 @@
 const path = require('path');
 const express= require('express')
 const dotenv = require('dotenv');
-
+const authroutes= require('./routes/auth')
 
 const connectDB = require('./config/db');
 
@@ -13,12 +13,13 @@ dotenv.config({ path: './config/config.env' });
 
 connectDB();
 const app = express()
-
-
 //Bosy parser- To read the data from the user:
 
 app.use(express.json());
 // Mouting the users:
+
+
+app.use('/api/',authroutes)
 
 app.use('/', (req,res)=>{
     res.json({"msg": "The api is running"})
