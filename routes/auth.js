@@ -3,7 +3,18 @@ const router = express.Router();
 const { check, validationResult } = require("express-validator");
 const User = require("../models/Users");
 const bcrypt = require("bcryptjs");
-router.get("/", (req, res) => {
+const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv');
+const requiredLoggin = require("../middleware/requiredLogin")
+
+
+// Load env vars
+dotenv.config({ path: './config/config.env' });
+
+const jwtkey  = "" + process.env.JWT_KEY
+
+
+router.get("/pro",requiredLoggin,  (req, res) => {
   res.json({ message: "Hello we are getting the data" });
 });
 
@@ -81,9 +92,11 @@ router.post(
         .status(422)
         .json({ message: "The user or password is invalid" });
     } else {
+        //reult is going to hold the boolean value:
         let result = bcrypt.compareSync(password, user.password);
         if(result){
-            return res.json({"message": "The Signin is sucessful"})    
+            const token= jwt.sign({_id: user._id}, jwtkey)
+            res.json(token)  
         }
         else{
             return res.status(422).json({"message": "The user or password is invalid"})
