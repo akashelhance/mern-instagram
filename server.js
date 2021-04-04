@@ -2,7 +2,7 @@ const path = require('path');
 const express= require('express')
 const dotenv = require('dotenv');
 const authroutes= require('./routes/auth')
-
+const postroutes= require('./routes/post')
 
 const connectDB = require('./config/db');
 
@@ -20,7 +20,8 @@ app.use(express.json());
 // Mouting the users:
 
 
-app.use('/api/',authroutes)
+app.use('/api/auth',authroutes)
+app.use('/api/post',postroutes)
 
 app.use('/', (req,res)=>{
     res.json({"msg": "The api is running"})

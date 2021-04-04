@@ -42,7 +42,7 @@ router.post(
           .json({ errors: [{ msg: "User already exists" }] });
       }
 
-      //Encryt password:
+
 
       user = new User({
         name,
